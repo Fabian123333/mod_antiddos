@@ -91,7 +91,7 @@ class AntiDDoSWorker{
 				}
 			}
 			   
-			return OK;
+			return DECLINED;
 		}
 	
 		// Apache Post Config Module Hook
