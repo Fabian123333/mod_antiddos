@@ -1,0 +1,12 @@
+{
+	"maxHits": 200,
+	"blockTime": 3600,
+
+	"filters": [
+		{
+			"useRegex": false,
+			"request": "blockme",
+			"score": 1000
+		}
+	]
+}

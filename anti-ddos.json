@@ -1,0 +1,34 @@
+{
+	"maxHits": 100,
+	"tickDown": 3,
+	
+	"defaults": {
+		"useRegex": false,
+		"score": 1,
+		"applyForCDN": false,
+		"applyForAssets": false,
+		"applyForBots": true,
+		"whitelist": ["127.0.0.1", "::1"]
+	},
+	
+	"filters": [
+		{
+			"useRegex": true,
+			"applyForBots": false,
+			"request": "/.*/",
+			"score": 1,
+			"method": "POST",
+			"refeer": ""
+		},
+		{
+			"domain": "localhost",
+			"score": 5
+		},
+		{
+			"userAgent": ".*",
+			"useRegex": true,
+			"statusCode": 403,
+			"score": 20
+		}
+	]
+}
