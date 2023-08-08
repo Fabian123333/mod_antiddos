@@ -4,6 +4,8 @@
 
 Defend your online infrastructure against the relentless tide of Distributed Denial-of-Service (DDoS) attacks using our cutting-edge Advanced DDoS Protection Module. This sophisticated solution employs an intelligent scoring system that identifies and neutralizes potential threats in real-time.
 
+The benefit above solutions like fail2ban is simple - fail2ban parses the request and bans afterwards, causing hugh delays during DDoS situations.
+
 ### Tailored Scoring Intelligence
 
 Powered by an ingenious scoring system, our module meticulously assesses incoming requests based on a carefully curated set of filters. This intricate process assigns dynamic scores to each request, empowering you to distinguish benign traffic from potentially malicious activity with unparalleled accuracy. These filters can simply be extended as required.
