@@ -20,6 +20,7 @@ static const command_rec        antiddos_directives[] =
     AP_INIT_TAKE1("AntiDDoSRedisPort", (const char* (*)())Config::SetRedisPort, NULL, RSRC_CONF, "Path of the redis server"),
     AP_INIT_TAKE1("AntiDDoSConfig", (const char* (*)())Config::SetConfigHook, NULL, RSRC_CONF, "Path of the anti-ddos configuration"),
     AP_INIT_TAKE1("AntiDDoSConfigLocal", (const char* (*)())Config::SetConfigLocalHook, NULL, RSRC_CONF, "Path of the local anti-ddos configuration (overwrite)"),
+    AP_INIT_TAKE1("AntiDDoSBlockCommand", (const char* (*)())Config::SetBlockCommandHook, NULL, RSRC_CONF, "Command to execute when ip is blocked"),
     { NULL }
 };
 

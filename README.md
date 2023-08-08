@@ -48,6 +48,7 @@ Incorporating a Redis backend, our solution offers more than robust security—i
 
 Effortlessly configure the module's behavior with precision using these Apache directives:
 
+- `AntiDDoSBlockCommand`: Specify format for block command (e.g. `/opt/firewall block %s 3600`)
 - `AntiDDoSRedisConnectionType`: Select the Redis server's connection type (unix, tcp).
 - `AntiDDoSRedisPath`: Specify the path to the Redis Socket (when using unix as protocol).
 - `AntiDDoSRedisTimeout`: Define the timeout for Redis server replies (in ms).

@@ -45,6 +45,12 @@ class Config{
 			return NULL;
 		}
 	
+		static char* SetBlockCommandHook(cmd_parms *cmd, void *cfg, const char *arg){
+			blockCommandFormat = (char*)malloc(strlen(arg) + 1);
+			strcpy(blockCommandFormat, arg);
+			return NULL;
+		}
+	
 		static char* SetRedisConnectionType(cmd_parms *cmd, void *cfg, const char *arg){
 			if(strcmp(arg, "unix"))
 				redisProtocol = AF_UNIX;
