@@ -104,9 +104,7 @@ class CharList{
 			return output_bitset;
 		}
 		
-		bool IPv4CIDRMatch(const char* ip, const char* cidr){
-			const std::bitset<32> compare_one(4294967295);
-			
+		bool IPv4CIDRMatch(const char* ip, const char* cidr){			
 			char *cidrParts[2];
 			Split(cidr, '/', cidrParts, 2);
 			
