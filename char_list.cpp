@@ -2,6 +2,9 @@
 #include <iostream>
 #include <cstdlib>
 
+// pow
+#include <cmath>
+
 // dynamic list class
 
 class CharList{
@@ -24,8 +27,15 @@ class CharList{
 			if(content == NULL){
 				return false;
 			} else {
-				if(strcmp(content, ip) == 0)
-					return true;
+				if(ContainsChar(content, '/'))
+					if(ContainsChar(content, '.'))
+						if(IPv4CIDRMatch(ip, content))
+							return true;
+					else
+						{/* @todo implement IPv6 CIDR */}
+				else
+					if(strcmp(content, ip) == 0)
+						return true;
 			}
 			
 			if(nextEntry)
@@ -58,5 +68,57 @@ class CharList{
 				str++;
 			}
 			return false;
+		}
+		
+		void Split(const char *s, char delimiter, char **tokens, int maxTokens) {
+			int tokenCount = 0;
+			while (*s && tokenCount < maxTokens) {
+				while (*s && *s == delimiter) {
+					++s;
+				}
+				if (*s) {
+					const char *start = s;
+					while (*s && *s != delimiter) {
+						++s;
+					}
+					int tokenLength = s - start;
+					tokens[tokenCount] = (char *)malloc(tokenLength + 1);
+					strncpy(tokens[tokenCount], start, tokenLength);
+					tokens[tokenCount][tokenLength] = '\0';
+					++tokenCount;
+				}
+			}
+		}
+		
+		std::bitset<32> IPv4ToBytes(const char* ip){
+			unsigned short a, b, c, d;
+			sscanf(ip, "%hu.%hu.%hu.%hu", &a, &b, &c, &d);
+			
+			std::bitset<8> b1(a);
+			std::bitset<8> b2(b);
+			std::bitset<8> b3(c);
+			std::bitset<8> b4(d);
+		
+			std::bitset<32> output_bitset(b1.to_string() + b2.to_string() + b3.to_string() + b4.to_string());
+			
+			return output_bitset;
+		}
+		
+		bool IPv4CIDRMatch(const char* ip, const char* cidr){
+			const std::bitset<32> compare_one(4294967295);
+			
+			char *cidrParts[2];
+			Split(cidr, '/', cidrParts, 2);
+			
+			std::bitset<32> ip_bitset = IPv4ToBytes(ip);
+			std::bitset<32> cidr_bitset = IPv4ToBytes(cidrParts[0]);
+			
+			int netmask = atoi(cidrParts[1]);
+			std::bitset<32> netmask_bitset(pow(2, 32 - netmask) - 1);
+			
+			std::bitset<32> network_ip = ip_bitset | netmask_bitset;
+			std::bitset<32> network_cidr = cidr_bitset | netmask_bitset;
+			
+			return network_ip == network_cidr;
 		}
 };
