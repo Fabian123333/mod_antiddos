@@ -1,0 +1,7 @@
+*.la
+*.lo
+*.slo
+*.out
+.libs
+
+test*
