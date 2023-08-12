@@ -239,6 +239,10 @@ class Config{
 		static int RedisTimeout(){
 			return redisTimeout;
 		}
+		
+		static CharList Whitelist(){
+			return whitelist;
+		}
 	
 	private:
 		static int maxHits;

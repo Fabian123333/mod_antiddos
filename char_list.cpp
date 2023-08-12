@@ -1,6 +1,5 @@
 // std::cout
 #include <iostream>
-
 #include <cstdlib>
 
 // dynamic list class
@@ -12,7 +11,6 @@ class CharList{
 			if(content == NULL){
 				content = (char*)malloc(strlen(c) + 1);
 				strcpy(content, c);
-				std::cout << "added entry: " << content << "\n";
 				return;
 			}
 			if(nextEntry == NULL){
@@ -20,6 +18,19 @@ class CharList{
 			}
 			
 			nextEntry->Add(c);
+		}
+		
+		bool ContainsIP(char* ip){
+			if(content == NULL){
+				return false;
+			} else {
+				if(strcmp(content, ip) == 0)
+					return true;
+			}
+			
+			if(nextEntry)
+				return nextEntry->ContainsIP(ip);
+			return false;
 		}
 	
 		bool Contains(char* c){
@@ -38,4 +49,14 @@ class CharList{
 	private:
 		CharList* nextEntry;
 		char* content;
+		
+		bool ContainsChar(const char* str, char c) {
+			while (*str != '\0') {
+				if (*str == c) {
+					return true;
+				}
+				str++;
+			}
+			return false;
+		}
 };

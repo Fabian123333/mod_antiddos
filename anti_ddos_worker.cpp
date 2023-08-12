@@ -47,11 +47,16 @@ class AntiDDoSWorker{
 		AntiDDoSWorker(){
 //			LoadConfig();
 			ConnectRedisServer();
-			
-			//RunTests();
 		}
 		
 		static int PreRequestHook(request_rec *r){
+			if(Config::Whitelist().ContainsIP(r->connection->client_ip)){
+				ap_log_error(APLOG_MARK, APLOG_INFO, 0, r->server,
+                     "ignore whitelisted ip: %s", r->connection->client_ip);
+			
+				return DECLINED;
+			}
+			
 			AntiDDoSWorker worker = AntiDDoSWorker();
 			
 			if(worker.CheckIfIsBlocked(r->connection->client_ip)){

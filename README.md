@@ -66,9 +66,9 @@ Effortlessly configure the module's behavior with precision using these Apache d
 6. Tailor module options in the Apache configuration file for a seamless integration, minimal config for apache2.local:
 ```
 # apache2.conf:
-LoadModule antiddos_module    /usr/lib/httpd/modules/mod_antiddos.so
+LoadModule antiddos_module    /usr/lib/apache2/modules/mod_antiddos.so
 AntiDDoSConfig /etc/apache2/anti-ddos.json
-AntiDDoSConfig /etc/apache2/anti-ddos-local.json
+AntiDDoSConfigLocal /etc/apache2/anti-ddos_local.json
 ```
 
 ## Catalyze Contributions and Nurture Excellence

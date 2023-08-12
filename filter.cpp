@@ -113,7 +113,7 @@ class Filter{
 			
 			if(!ApplyForAssets()){
 				if(UrlIsAsset(r->unparsed_uri)){
-					std::cerr << "skipped asset request on " << r->unparsed_uri << "\n";
+//					std::cerr << "skipped asset request on " << r->unparsed_uri << "\n";
 					return 0;
 				}
 			}
@@ -131,7 +131,7 @@ class Filter{
 														
     				if(e[i].key && strcmp(headerlowercase, "user-agent") == 0)
     			    	if(UserAgentIsBot(e[i].val)){
-							std::cerr << "skipped bot request on " << r->unparsed_uri << "\n";
+//							std::cerr << "skipped bot request on " << r->unparsed_uri << "\n";
 							free(headerlowercase);
 							return 0;
 						}
@@ -143,7 +143,7 @@ class Filter{
 			if(GetMethod() != NULL){
 				char * m = toLowerCase(r->method);
 				if(!(strcmp(method, m)) == 0){
-					std::cerr << "skipped filter with 'wrong' method " << r->method << " filter would be " << method << "\n";
+//					std::cerr << "skipped filter with 'wrong' method " << r->method << " filter would be " << method << "\n";
 					free(m);
 					return 0;
 				}
@@ -152,7 +152,7 @@ class Filter{
 			
 			if(GetDomain() != NULL){
 				if(!CompareValues(r->hostname, GetDomain(), IsUseRegex())){
-					std::cerr << "skipped filter with 'wrong' domain " << r->hostname << " domain would be " << GetDomain() << "\n";
+//					std::cerr << "skipped filter with 'wrong' domain " << r->hostname << " domain would be " << GetDomain() << "\n";
 					return 0;
 				}
 					
@@ -160,7 +160,7 @@ class Filter{
 			
 			if(GetRequest() != NULL){
 				if(!CompareValues(r->unparsed_uri, GetRequest(), IsUseRegex())){
-					std::cerr << "skipped request does not match\n";
+//					std::cerr << "skipped request does not match\n";
 					return 0;
 				}
 			}
@@ -178,7 +178,7 @@ class Filter{
 														
     				if(e[i].key && strcmp(headerlowercase, "referer") == 0)
     			    	if(!CompareValues(e[i].val, GetRefeer(), IsUseRegex())){
-							std::cerr << "skipped bot referer does not match\n";
+//							std::cerr << "skipped bot referer does not match\n";
 							free(headerlowercase);
 							return 0;
 						}
@@ -189,7 +189,7 @@ class Filter{
 			
 			if(GetUserAgent() != NULL){
 				if(!CompareValues(r->unparsed_uri, GetUserAgent(), IsUseRegex())){
-					std::cerr << "skipped request useragent does not match\n";
+//					std::cerr << "skipped request useragent does not match\n";
 					return 0;
 				}
 			}
