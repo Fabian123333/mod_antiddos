@@ -32,7 +32,8 @@ class CharList{
 						if(IPv4CIDRMatch(ip, content))
 							return true;
 					else
-						{/* @todo implement IPv6 CIDR */}
+						if(IPv6CIDRMatch(ip, content))
+							return true;
 				else
 					if(strcmp(content, ip) == 0)
 						return true;
@@ -116,6 +117,86 @@ class CharList{
 			
 			std::bitset<32> network_ip = ip_bitset | netmask_bitset;
 			std::bitset<32> network_cidr = cidr_bitset | netmask_bitset;
+			
+			return network_ip == network_cidr;
+		}
+		
+		std::bitset<128> IPv6ToBytes(const char* ip){
+			char* currentBuffer = (char*)malloc(5);
+			strcpy(currentBuffer, "");
+			char lastCharacter;
+			
+			std::bitset<16> splitBitset[8];
+			int splitid = 0;
+			
+			for(int i = 0;; i++){
+				if(ip[i] == ':' || ip[i] == '\0'){
+					// add leading zeros
+					while(strlen(currentBuffer) != 4){
+						char* newBuffer = (char*)malloc(strlen(currentBuffer) + 1);
+						strcpy(newBuffer, "0");
+						strcat(newBuffer, currentBuffer);
+						free(currentBuffer);
+						currentBuffer = newBuffer;
+					}
+				
+					if(lastCharacter == ':'){
+						int remainingParts = 0;
+						
+						for(int v = i; ip[v] != '\0'; v++){
+							if(ip[v] == ':')
+								remainingParts++;
+						}
+						
+						int skips = 7 - remainingParts - splitid;
+							
+						for(int v = 0; v < skips; v++){
+							uint16_t part_as_int16 = 0;
+							splitBitset[splitid++] = part_as_int16;
+					
+							continue;
+						}
+					}
+		
+					char* endPtr;
+					uint16_t part_as_int16 = static_cast<uint16_t>(std::strtoul(currentBuffer, &endPtr, 16));
+					
+					splitBitset[splitid++] = part_as_int16;
+					
+					free(currentBuffer);
+					
+					if(ip[i] == '\0')
+						break;
+					
+					currentBuffer = (char*)malloc(5);
+					strcpy(currentBuffer, "");
+				}
+				else{
+					char newChar[2];
+					newChar[0] = ip[i];
+					newChar[1] = '\0';
+					strcat(currentBuffer, &newChar[0]);
+				}
+				lastCharacter = ip[i];
+			}
+			
+			std::bitset<128> out_bitset(splitBitset[0].to_string() + splitBitset[1].to_string() + splitBitset[2].to_string() + splitBitset[3].to_string() + splitBitset[4].to_string() + splitBitset[5].to_string() + splitBitset[6].to_string() + splitBitset[7].to_string());
+			
+			return out_bitset;
+		}
+
+		bool IPv6CIDRMatch(const char* ip, const char* cidr){	
+			char *cidrParts[2];
+			Split(cidr, '/', cidrParts, 2);
+			
+			std::bitset<128> ip_bitset = IPv6ToBytes(ip);
+			std::bitset<128> cidr_bitset = IPv6ToBytes(cidrParts[0]);
+			
+			int netmask = atoi(cidrParts[1]);
+			std::bitset<128> netmask_bitset(pow(2, 128 - netmask) - 1);
+			
+			std::bitset<128> network_ip = ip_bitset | netmask_bitset;
+			std::bitset<128> network_cidr = cidr_bitset | netmask_bitset;
 			
 			return network_ip == network_cidr;
 		}
