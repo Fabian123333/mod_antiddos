@@ -106,9 +106,15 @@ class Filter{
 			return std::regex_search(ua, botPattern);
 		}
 	
-		int GetScore(request_rec *r){
+		int GetScore(request_rec *r, bool postRequest = false){
 			// status code only available after request
-			if(GetStatusCode() != 0)
+			if(GetStatusCode() == 0 && postRequest)
+				return 0;
+				
+			if(GetStatusCode() != 0 && !postRequest)
+				return 0;
+			
+			if(r->status != GetStatusCode() && GetStatusCode() != 0)
 				return 0;
 			
 			if(!ApplyForAssets()){

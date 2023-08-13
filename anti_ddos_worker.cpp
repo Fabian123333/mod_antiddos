@@ -49,6 +49,46 @@ class AntiDDoSWorker{
 			ConnectRedisServer();
 		}
 		
+		static int PostRequestHook(request_rec *r){
+    		// ignore whitelist
+			if(Config::Whitelist().ContainsIP(r->connection->client_ip)){			
+				return DECLINED;
+			}
+			
+			AntiDDoSWorker worker = AntiDDoSWorker();
+			
+			int score = 0;
+			
+			for(int i = 0; i < Config::Filters().Count(); i++){
+				score += Config::Filters().Get(i).GetScore(r, true);
+			}
+			
+			if(score > 0){
+				ap_log_error(APLOG_MARK, APLOG_NOTICE, 0, r->server,
+                	"add score for %s from postrequest (%i)", r->connection->client_ip, score);
+
+				worker.IncreaseScore(r->connection->client_ip, score);
+					
+				if(worker.GetScore(r->connection->client_ip) > Config::MaxHits())
+				{
+					worker.TickDownScore(r->connection->client_ip);
+					if(worker.GetScore(r->connection->client_ip) > Config::MaxHits()){
+						worker.Block(r->connection->client_ip);
+							
+						r->status = 429;
+						
+						ap_log_error(APLOG_MARK, APLOG_WARNING, 0, r->server,
+                     		"block access, client exceeded score limit: %s (postrequest)", r->connection->client_ip);
+						
+						return OK;
+					}
+						
+				}
+			}
+			
+			return DECLINED;
+		}
+		
 		static int PreRequestHook(request_rec *r){
 			if(Config::Whitelist().ContainsIP(r->connection->client_ip)){
 				ap_log_error(APLOG_MARK, APLOG_INFO, 0, r->server,
@@ -74,7 +114,7 @@ class AntiDDoSWorker{
 			}
 			
 			if(score > 0){
-				ap_log_error(APLOG_MARK, APLOG_CRIT, 0, r->server,
+				ap_log_error(APLOG_MARK, APLOG_NOTICE, 0, r->server,
                 	"add score for %s (%i)", r->connection->client_ip, score);
 
 				worker.IncreaseScore(r->connection->client_ip, score);
@@ -87,7 +127,7 @@ class AntiDDoSWorker{
 							
 						r->status = 429;
 						
-						ap_log_error(APLOG_MARK, APLOG_INFO, 0, r->server,
+						ap_log_error(APLOG_MARK, APLOG_WARNING, 0, r->server,
                      		"block access, client exceeded score limit: %s", r->connection->client_ip);
 						
 						return OK;
