@@ -183,15 +183,28 @@ class Config{
 				try{
 					newFilter.SetApplyForAssets(el.value()["applyForAssets"]);
 				}catch(const std::exception& e){}
+				
+				if(newFilter.GetStatusCode() != 0){
+					filtersPostRequest.Add(newFilter);
+				} else {	
+					filtersPreRequest.Add(newFilter);
+				}
 
-				filters.Add(newFilter);
 			}
 
 			f.close();
 		}
 	
-		static FilterList Filters(){
-			return filters;
+		static FilterList FiltersPreRequest(){
+			return filtersPreRequest;
+		}
+	
+		static FilterList FiltersPostRequest(){
+			return filtersPostRequest;
+		}
+
+		static FilterList FiltersPostContent(){
+			return filtersPostContent;
 		}
 	
 		static int TickDown(){

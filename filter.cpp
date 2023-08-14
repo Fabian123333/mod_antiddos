@@ -107,16 +107,6 @@ class Filter{
 		}
 	
 		int GetScore(request_rec *r, bool postRequest = false){
-			// status code only available after request
-			if(GetStatusCode() == 0 && postRequest)
-				return 0;
-				
-			if(GetStatusCode() != 0 && !postRequest)
-				return 0;
-			
-			if(r->status != GetStatusCode() && GetStatusCode() != 0)
-				return 0;
-			
 			if(!ApplyForAssets()){
 				if(UrlIsAsset(r->unparsed_uri)){
 //					std::cerr << "skipped asset request on " << r->unparsed_uri << "\n";
