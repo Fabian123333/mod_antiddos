@@ -113,7 +113,7 @@ class Filter{
 			return std::regex_search(ua, botPattern);
 		}
 	
-		int GetScore(request_rec *r, bool postRequest = false){
+		int GetScore(request_rec *r){
 			if(!ApplyForAssets()){
 				if(UrlIsAsset(r->unparsed_uri)){
 //					std::cerr << "skipped asset request on " << r->unparsed_uri << "\n";
@@ -153,13 +153,7 @@ class Filter{
 				free(m);
 			}
 			
-			if(GetDomains().Count() != 0){
-				if(!GetDomains().Contains(r->hostname)){
-//					std::cerr << "skipped filter with 'wrong' domain " << r->hostname << " domain would be " << GetDomain() << "\n";
-					return 0;
-				}
-					
-			}
+			// removed domain check, as only filters are passed with matching domains
 			
 			if(GetRequest() != NULL){
 				if(!CompareValues(r->unparsed_uri, GetRequest(), IsUseRegex())){
