@@ -26,6 +26,9 @@ class Filter{
 		char* GetMethod(){
 			return method;
 		}
+		char* GetContent(){
+			return content;
+		}
 		int GetStatusCode(){
 			return statusCode;
 		}
@@ -70,6 +73,11 @@ class Filter{
 			method = toLowerCase(value);
 		}
 	
+		void SetContent(const char* c){
+			content = (char*)malloc(strlen(c));
+			strcpy(content, c);
+		}
+	
 		void SetStatusCode(int value){
 			statusCode = value;	
 		}	
@@ -107,16 +115,6 @@ class Filter{
 		}
 	
 		int GetScore(request_rec *r, bool postRequest = false){
-			// status code only available after request
-			if(GetStatusCode() == 0 && postRequest)
-				return 0;
-				
-			if(GetStatusCode() != 0 && !postRequest)
-				return 0;
-			
-			if(r->status != GetStatusCode() && GetStatusCode() != 0)
-				return 0;
-			
 			if(!ApplyForAssets()){
 				if(UrlIsAsset(r->unparsed_uri)){
 //					std::cerr << "skipped asset request on " << r->unparsed_uri << "\n";
@@ -209,6 +207,7 @@ class Filter{
 		char* refeer;
 		char* request;
 		char* method;
+		char* content;
 		int statusCode = 0;
 		int score = 1;
 		bool useRegex = false;

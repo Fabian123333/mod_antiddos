@@ -9,6 +9,7 @@ static void module_register_hooks(apr_pool_t *p)
 {
     ap_hook_handler(AntiDDoSWorker::PreRequestHook, NULL, NULL, APR_HOOK_FIRST);
 	ap_hook_log_transaction(AntiDDoSWorker::PostRequestHook , NULL, NULL, APR_HOOK_MIDDLE);
+	//ap_register_output_filter("antiddos_output_filter", AntiDDoSWorker::PostContentHook, NULL, AP_FTYPE_RESOURCE);
     ap_hook_post_config(AntiDDoSWorker::PostConfigHook, NULL, NULL, APR_HOOK_MIDDLE);
 }
 
