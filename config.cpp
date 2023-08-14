@@ -145,7 +145,14 @@ class Config{
 					newFilter.SetRefeer(tmp);
 					free(tmp);
 				}catch(const std::exception& e){}
-								
+				
+				try{
+					char* tmp = (char*)malloc(el.value()["content"].get<std::string>().length());
+					strcpy(tmp, el.value()["content"].get<std::string>().c_str());
+					newFilter.SetContent(tmp);
+					free(tmp);
+				}catch(const std::exception& e){}
+				
 				try{
 					char* tmp = (char*)malloc(el.value()["request"].get<std::string>().length());
 					strcpy(tmp, el.value()["request"].get<std::string>().c_str());
@@ -184,7 +191,10 @@ class Config{
 					newFilter.SetApplyForAssets(el.value()["applyForAssets"]);
 				}catch(const std::exception& e){}
 				
-				if(newFilter.GetStatusCode() != 0){
+				if(newFilter.GetContent() != NULL){
+					filtersPostContent.Add(newFilter);					
+				}
+				else if(newFilter.GetStatusCode() != 0){
 					filtersPostRequest.Add(newFilter);
 				} else {	
 					filtersPreRequest.Add(newFilter);

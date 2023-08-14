@@ -26,6 +26,9 @@ class Filter{
 		char* GetMethod(){
 			return method;
 		}
+		char* GetContent(){
+			return content;
+		}
 		int GetStatusCode(){
 			return statusCode;
 		}
@@ -68,6 +71,11 @@ class Filter{
 	
 		void SetMethod(char* value){
 			method = toLowerCase(value);
+		}
+	
+		void SetContent(const char* c){
+			content = (char*)malloc(strlen(c));
+			strcpy(content, c);
 		}
 	
 		void SetStatusCode(int value){
@@ -199,6 +207,7 @@ class Filter{
 		char* refeer;
 		char* request;
 		char* method;
+		char* content;
 		int statusCode = 0;
 		int score = 1;
 		bool useRegex = false;
