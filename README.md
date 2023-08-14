@@ -63,7 +63,7 @@ Effortlessly configure the module's behavior with precision using these Apache d
 3. Navigate to the module directory: `cd mod_antiddos`
 4. Execute installation: `make`
 5. Move Plugin to Apache Libdir `mv .libs/mod_antiddos.so /usr/lib/apache2/modules/`
-6. Tailor module options in the Apache configuration file for a seamless integration, minimal config for apache2.local:
+6. Tailor module options in the Apache configuration file for a seamless integration, minimal config for apache2.conf:
 ```
 # apache2.conf:
 LoadModule antiddos_module    /usr/lib/apache2/modules/mod_antiddos.so
