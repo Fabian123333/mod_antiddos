@@ -17,8 +17,8 @@ class Filter{
 		char* GetRefeer(){
 			return refeer;
 		}
-		char* GetDomain(){
-			return domain;
+		CharList GetDomains(){
+			return domains;
 		}
 		char* GetRequest(){
 			return request;
@@ -26,7 +26,7 @@ class Filter{
 		char* GetMethod(){
 			return method;
 		}
-		char* GetContent(){
+		char* GetContent(){ 
 			return content;
 		}
 		int GetStatusCode(){
@@ -54,9 +54,8 @@ class Filter{
 			strcpy(userAgent, value);
 		}
 	
-		void SetDomain(char* value){
-			domain = (char*)malloc(strlen(value) + 1);
-			strcpy(domain, value);			
+		void AddDomain(char* value){
+			domains.Add(value);
 		}	
 	
 		void SetRefeer(char* value){
@@ -154,8 +153,8 @@ class Filter{
 				free(m);
 			}
 			
-			if(GetDomain() != NULL){
-				if(!CompareValues(r->hostname, GetDomain(), IsUseRegex())){
+			if(GetDomains().Count() != 0){
+				if(!GetDomains().Contains(r->hostname)){
 //					std::cerr << "skipped filter with 'wrong' domain " << r->hostname << " domain would be " << GetDomain() << "\n";
 					return 0;
 				}
@@ -203,7 +202,6 @@ class Filter{
 	
 	private:
 		char* userAgent;
-		char* domain;
 		char* refeer;
 		char* request;
 		char* method;

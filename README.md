@@ -23,7 +23,7 @@ Elevating security measures, our module seamlessly enforces a custom ban command
 Experience granular control over your filtering strategy with a diverse array of customizable parameters, empowering you to tailor defenses to your unique environment.
 
 - `userAgent`: Filter requests based on user agents, a pivotal strategy to pinpoint potentially malicious clients.
-- `domain`: Employ domain-based filters to focus on specific sections of your application.
+- `domain`: Employ domain-based filters to focus on specific sections of your application. Supports lists or single domains.
 - `referer`: Evaluate the source of incoming requests with referer-based filters.
 - `request`: Scrutinize request content with contextual filtering.
 - `method`: Filter requests by their HTTP methods (GET, POST, etc.).
