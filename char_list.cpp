@@ -2,6 +2,9 @@
 #include <iostream>
 #include <cstdlib>
 
+// uint16_t
+#include <cstdint>
+
 // pow
 #include <cmath>
 

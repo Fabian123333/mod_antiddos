@@ -21,7 +21,9 @@ using json = nlohmann::json;
 class Config{
 	public:
 		Config(){
-			filters = FilterList();
+			filtersPreRequest = FilterList();
+			filtersPostRequest = FilterList();
+			filtersPostContent = FilterList();
 			whitelist = CharList();
 		}
 	
@@ -248,7 +250,9 @@ class Config{
 		static int maxHits;
 		static int tickDown;
 		static int blockTime;
-		static FilterList filters;
+		static FilterList filtersPreRequest;
+		static FilterList filtersPostRequest;
+		static FilterList filtersPostContent;
 		static Filter* defaults;
 		static CharList whitelist;
 	
@@ -266,7 +270,9 @@ int Config::maxHits = 1000;
 int Config::tickDown = 5;
 int Config::blockTime = 60;
 Filter* Config::defaults;
-FilterList Config::filters;
+FilterList Config::filtersPreRequest;
+FilterList Config::filtersPostRequest;
+FilterList Config::filtersPostContent;
 CharList Config::whitelist;
 
 char* Config::blockCommandFormat;
