@@ -48,6 +48,11 @@ class AntiDDoSWorker{
 //			LoadConfig();
 			ConnectRedisServer();
 		}
+	
+		static int PostContentHook(ap_filter_t* f, apr_bucket_brigade* bb) {
+			// todo
+			return DECLINED;
+		}
 		
 		static int PostRequestHook(request_rec *r){
     		// ignore whitelist
