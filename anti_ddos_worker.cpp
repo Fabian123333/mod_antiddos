@@ -59,8 +59,8 @@ class AntiDDoSWorker{
 			
 			int score = 0;
 			
-			for(int i = 0; i < Config::Filters().Count(); i++){
-				score += Config::Filters().Get(i).GetScore(r, true);
+			for(int i = 0; i < Config::FiltersPostRequest().Count(); i++){
+				score += Config::FiltersPostRequest().Get(i).GetScore(r, true);
 			}
 			
 			if(score > 0){
@@ -109,8 +109,8 @@ class AntiDDoSWorker{
 			
 			int score = 0;
 			
-			for(int i = 0; i < Config::Filters().Count(); i++){
-				score += Config::Filters().Get(i).GetScore(r);
+			for(int i = 0; i < Config::FiltersPreRequest().Count(); i++){
+				score += Config::FiltersPreRequest().Get(i).GetScore(r);
 			}
 			
 			if(score > 0){
