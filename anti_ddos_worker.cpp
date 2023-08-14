@@ -68,6 +68,14 @@ class AntiDDoSWorker{
 				score += Config::FiltersPostRequest().Get(i).GetScore(r);
 			}
 			
+			if(worker.CheckIfIsBlocked(r->connection->client_ip)){
+				r->status = 429;
+				ap_log_error(APLOG_MARK, APLOG_INFO, 0, r->server,
+                     "detect blocked access, too many requests: %s", r->connection->client_ip);
+				
+				return OK;
+			}
+			
 			for(int i = 0; i < Config::DomainFiltersPostRequest(r->hostname).Count(); i++){
 				ap_log_error(APLOG_MARK, APLOG_DEBUG, 0, r->server,
                 	"detect filters for domain from postrequest (%s)", r->hostname);
