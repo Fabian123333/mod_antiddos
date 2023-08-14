@@ -12,7 +12,12 @@
 
 class CharList{
 	public:
+		int Count(){
+			return count;	
+		}
+	
 		void Add(char* c){
+			count++;
 			// if currently no entry
 			if(content == NULL){
 				content = (char*)malloc(strlen(c) + 1);
@@ -47,7 +52,7 @@ class CharList{
 			return false;
 		}
 	
-		bool Contains(char* c){
+		bool Contains(const char* c){
 			if(content == NULL){
 				return false;	
 			}
@@ -63,6 +68,7 @@ class CharList{
 	private:
 		CharList* nextEntry;
 		char* content;
+		int count = 0;
 		
 		bool ContainsChar(const char* str, char c) {
 			while (*str != '\0') {

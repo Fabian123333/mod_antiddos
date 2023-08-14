@@ -133,9 +133,21 @@ class Config{
 				}catch(const std::exception& e){}
 				
 				try{
+					for (auto& el2 : el.value()["domain"].items())
+					{
+						std::string tmp = el2.value().get<std::string>();
+						char* tmp2 = (char*)malloc(tmp.length() + 1);
+						strcpy(tmp2, tmp.c_str());
+					
+						newFilter.AddDomain(tmp2);
+						free(tmp2);
+					}
+				}catch(const std::exception& e){}
+				
+				try{
 					char* tmp = (char*)malloc(el.value()["domain"].get<std::string>().length());
 					strcpy(tmp, el.value()["domain"].get<std::string>().c_str());
-					newFilter.SetDomain(tmp);
+					newFilter.AddDomain(tmp);
 					free(tmp);
 				}catch(const std::exception& e){}
 								
