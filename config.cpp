@@ -1,3 +1,9 @@
+// std::map
+#include <map>
+
+// string
+#include <string>
+
 // std::ifstream
 #include <fstream>
 
@@ -204,12 +210,36 @@ class Config{
 				}catch(const std::exception& e){}
 				
 				if(newFilter.GetContent() != NULL){
-					filtersPostContent.Add(newFilter);					
+					// PostContent
+					if(newFilter.GetDomains().Count() != 0)
+					{
+						for(int i = 0; i < newFilter.GetDomains().Count(); i++){
+							domainFiltersPostContent[newFilter.GetDomains().Get(i)].Add(newFilter);
+						}
+					}
+					else
+						filtersPostContent.Add(newFilter);					
 				}
 				else if(newFilter.GetStatusCode() != 0){
-					filtersPostRequest.Add(newFilter);
+					// PostProcessing
+					if(newFilter.GetDomains().Count() != 0)
+					{
+						for(int i = 0; i < newFilter.GetDomains().Count(); i++){
+							domainFiltersPostRequest[newFilter.GetDomains().Get(i)].Add(newFilter);
+						}
+					}
+					else
+						filtersPostRequest.Add(newFilter);
 				} else {	
-					filtersPreRequest.Add(newFilter);
+					// PreProcessing
+					if(newFilter.GetDomains().Count() != 0)
+					{
+						for(int i = 0; i < newFilter.GetDomains().Count(); i++){
+							domainFiltersPreRequest[newFilter.GetDomains().Get(i)].Add(newFilter);
+						}
+					}
+					else
+						filtersPreRequest.Add(newFilter);
 				}
 
 			}
@@ -227,6 +257,21 @@ class Config{
 
 		static FilterList FiltersPostContent(){
 			return filtersPostContent;
+		}
+	
+		static FilterList DomainFiltersPreRequest(const char* domain){
+			std::string str = domain;
+			return domainFiltersPreRequest[domain];
+		}
+	
+		static FilterList DomainFiltersPostRequest(const char* domain){
+			std::string str = domain;
+			return domainFiltersPostRequest[domain];
+		}
+	
+		static FilterList DomainFiltersPostContent(const char* domain){
+			std::string str = domain;
+			return domainFiltersPostContent[domain];
 		}
 	
 		static int TickDown(){
@@ -285,9 +330,15 @@ class Config{
 		static int maxHits;
 		static int tickDown;
 		static int blockTime;
+		
 		static FilterList filtersPreRequest;
 		static FilterList filtersPostRequest;
 		static FilterList filtersPostContent;
+	
+		static std::map<std::string, FilterList> domainFiltersPreRequest;
+		static std::map<std::string, FilterList> domainFiltersPostRequest;
+		static std::map<std::string, FilterList> domainFiltersPostContent;
+	
 		static Filter* defaults;
 		static CharList whitelist;
 	
@@ -308,6 +359,11 @@ Filter* Config::defaults;
 FilterList Config::filtersPreRequest;
 FilterList Config::filtersPostRequest;
 FilterList Config::filtersPostContent;
+
+std::map<std::string, FilterList> Config::domainFiltersPreRequest;
+std::map<std::string, FilterList> Config::domainFiltersPostRequest;
+std::map<std::string, FilterList> Config::domainFiltersPostContent;
+
 CharList Config::whitelist;
 
 char* Config::blockCommandFormat;

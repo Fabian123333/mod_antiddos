@@ -65,7 +65,14 @@ class AntiDDoSWorker{
 			int score = 0;
 			
 			for(int i = 0; i < Config::FiltersPostRequest().Count(); i++){
-				score += Config::FiltersPostRequest().Get(i).GetScore(r, true);
+				score += Config::FiltersPostRequest().Get(i).GetScore(r);
+			}
+			
+			for(int i = 0; i < Config::DomainFiltersPostRequest(r->hostname).Count(); i++){
+				ap_log_error(APLOG_MARK, APLOG_DEBUG, 0, r->server,
+                	"detect filters for domain from postrequest (%s)", r->hostname);
+				
+				score += Config::DomainFiltersPostRequest(r->hostname).Get(i).GetScore(r);
 			}
 			
 			if(score > 0){
@@ -116,6 +123,13 @@ class AntiDDoSWorker{
 			
 			for(int i = 0; i < Config::FiltersPreRequest().Count(); i++){
 				score += Config::FiltersPreRequest().Get(i).GetScore(r);
+			}
+			
+			for(int i = 0; i < Config::DomainFiltersPreRequest(r->hostname).Count(); i++){
+				ap_log_error(APLOG_MARK, APLOG_DEBUG, 0, r->server,
+                	"detect filters for domain %s", r->hostname);
+				
+				score += Config::DomainFiltersPreRequest(r->hostname).Get(i).GetScore(r);
 			}
 			
 			if(score > 0){

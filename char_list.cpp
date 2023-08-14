@@ -16,6 +16,12 @@ class CharList{
 			return count;	
 		}
 	
+		char* Get(int id){
+			if(id-- == 0)
+				return content;
+			return nextEntry->Get(id);
+		}
+	
 		void Add(char* c){
 			count++;
 			// if currently no entry
