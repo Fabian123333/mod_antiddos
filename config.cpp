@@ -60,7 +60,7 @@ class Config{
 		}
 	
 		static char* SetRedisConnectionType(cmd_parms *cmd, void *cfg, const char *arg){
-			if(strcmp(arg, "unix") || strcmp(arg, "UNIX") )
+			if(strcmp(arg, "unix") == 0 || strcmp(arg, "UNIX") == 0 )
 				redisProtocol = AF_UNIX;
 			redisProtocol = AF_INET;
 			return NULL;
